@@ -10,10 +10,7 @@ import SplitContainer from './components/SplitContainer.vue'
 
     <div class="wrapper">
       
-      <SplitContainer direction="column" position="30">
-        <div slot="first">A1</div>
-        <div slot="secon">A2</div>
-      </SplitContainer>        
+  
       
 
       <HelloWorld msg="You did it!" />
@@ -21,6 +18,10 @@ import SplitContainer from './components/SplitContainer.vue'
   </header>
 
   <main>
+    <SplitContainer direction="row" position="30">
+        <div slot="first">A1</div>
+        <div slot="second">A2</div>
+    </SplitContainer>      
     <TheWelcome />
   </main>
 </template>

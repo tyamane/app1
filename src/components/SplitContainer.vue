@@ -34,6 +34,9 @@ defineProps({
 .column {
     flex-flow: column;
 }
+.row {
+    flex-flow: row;
+}
 #splitter {
     min-width:3px;
     min-height: 3px;
@@ -54,14 +57,23 @@ defineProps({
 }
 </style>
 <template>
-<div id="container" ref="container" class="${direction}">
 
-    <div id="first" ref="first" v-bind:style="{'flex-grow': position, minWidth: direction=='row' ? first_min: '100%',minHeight: direction=='row' ? first_min: '100%' }">
-        <slot name="first"></slot>
+<div v-if="direction=='row'" id="container" class="row">
+    <div id="first" v-bind:style="{'flex-grow': position, minWidth: first_min}">
+        <slot name="first" >fallback first</slot>
     </div>
     <div id="splitter" ref="splitter"></div>
-    <div id="second" ref="second" v-bind:style="{'flex-grow': 100 - position, minWidth: direction=='row' ? second_min: '100%',minHeight: direction=='row' ? second_min: '100%'}">
-        <slot name="second"></slot>
+    <div id="second" v-bind:style="{'flex-grow': 100-position, minWidth: second_min}">
+        <slot name="second" >fallback second</slot>
+    </div>
+</div>
+<div v-else id="container" class="column">
+    <div id="first" v-bind:style="{'flex-grow': position, minHeight: first_min}">
+        <slot name="first" >fallback first</slot>
+    </div>
+    <div id="splitter" ref="splitter"></div>
+    <div id="second" v-bind:style="{'flex-grow': 100-position, minHeight: second_min}">
+        <slot name="second" >fallback second</slot>
     </div>
 </div>
 </template>
