@@ -18,17 +18,8 @@ defineProps({
   }, 
 })
 
-const container = ref(null)
-const first = ref(null)
-const second = ref(null)
-const splitter = ref(null)
 
-function firstContainerStyle(){
-  return {
-    minWidth: furst_min,
 
-  }
-}
 </script>
 
 <style>
@@ -47,7 +38,6 @@ function firstContainerStyle(){
     min-width:3px;
     min-height: 3px;
     background: silver;
-    use-select: none;
 }
 .row #splitter {
     cursor: col-resize;

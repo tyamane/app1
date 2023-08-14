@@ -1,6 +1,7 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
+import SplitContainer from './components/SplitContainer.vue'
 </script>
 
 <template>
@@ -8,6 +9,13 @@ import TheWelcome from './components/TheWelcome.vue'
     <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
+      
+      <SplitContainer direction="column" position="30">
+        <div slot="first">A1</div>
+        <div slot="secon">A2</div>
+      </SplitContainer>        
+      
+
       <HelloWorld msg="You did it!" />
     </div>
   </header>
