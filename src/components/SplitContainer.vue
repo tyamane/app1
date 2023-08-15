@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted,computed } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 
 const props = defineProps({
   direction: {
@@ -20,15 +20,23 @@ const props = defineProps({
   }, 
 })
 
+const firstStyle = reactive(
+    props.direction === "row" ? 
+        {
+            minWidth: props.first_min,
+            flexGrow: props.position
+        } : {
+            minHeight: props.first_min,
+            flexGrow: props.position
+        }
+)   
 
-const container = ref(null)
 const first = ref(null)
 const second = ref(null)
+const container = ref(null)
 const splitter = ref(null)
-
 let handling = false
 onMounted(() => {
-
     first.value.style.flexGrow = props.position
     second.value.style.flexGrow = 100 - props.position
     if (props.direction === "row") {
@@ -46,7 +54,6 @@ onMounted(() => {
 })
 
 window.addEventListener("mousemove", (event) => {
-
     if (handling) {   
         console.log("mousemove", handling)
         const { x, y } = container.value.getBoundingClientRect()
@@ -64,18 +71,15 @@ window.addEventListener("mousemove", (event) => {
 window.addEventListener("mouseup", () => {
     handling = false
 })
-const containerClass = computed(() => ({
-  row: props.direction === 'row',
-  column: props.direction === 'column'
-}))
+
 </script>
 <template>
     <div  ref="container" id="container" :class="containerClass">
-        <div id="first" ref="first">
+        <div id="first" ref="first" :class="firstStyle">
             <slot name="first" >fallback first</slot>
         </div>
         <div id="splitter" ref="splitter"></div>
-        <div id="second" ref="second" >
+        <div id="second" ref="second" :class="secondStyle">
             <slot name="second" >fallback second</slot>
         </div>
     </div>
