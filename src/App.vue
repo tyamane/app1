@@ -7,21 +7,20 @@ import SplitContainer from './components/SplitContainer.vue'
 <template>
   <header>
     <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
     <div class="wrapper">
-      
-  
-      
-
       <HelloWorld msg="You did it!" />
     </div>
   </header>
 
-  <main>
-    <SplitContainer direction="row" position="30">
-        <div slot="first">A1</div>
-        <div slot="second">A2</div>
-    </SplitContainer>      
+  <main>  
+      
+    <SplitContainer direction="row" position=30>
+      <template v-slot:first>
+        A1
+      </template>
+      <template v-slot:second>A2</template>
+    </SplitContainer>  
+    
     <TheWelcome />
   </main>
 </template>

@@ -1,5 +1,7 @@
 <script setup>
-defineProps({
+import { ref, onMounted,computed } from 'vue'
+
+const props = defineProps({
   direction: {
     type: String,
     required: true
@@ -19,9 +21,65 @@ defineProps({
 })
 
 
+const container = ref(null)
+const first = ref(null)
+const second = ref(null)
+const splitter = ref(null)
 
+let handling = false
+onMounted(() => {
+
+    first.value.style.flexGrow = props.position
+    second.value.style.flexGrow = 100 - props.position
+    if (props.direction === "row") {
+        first.value.style.minWidth = props.first_min
+        second.value.style.minWidth = props.second_min
+    } else {
+        first.value.style.minHeight = props.first_min
+        second.value.style.minHeight = props.second_min
+    }
+    console.log("splitter", splitter.value)
+    splitter.value.addEventListener("mousedown", (event) => {
+        handling = true
+        event.preventDefault()
+    })
+})
+
+window.addEventListener("mousemove", (event) => {
+
+    if (handling) {   
+        console.log("mousemove", handling)
+        const { x, y } = container.value.getBoundingClientRect()
+        if (props.direction === "row") {
+            const left = event.clientX - x
+            first.value.style.flexGrow = left
+            second.value.style.flexGrow = container.value.clientWidth - left
+        } else {
+            const top = event.clientY - y
+            first.value.style.flexGrow = top
+            second.value.style.flexGrow = container.value.clientHeight - top
+        }
+    }
+})
+window.addEventListener("mouseup", () => {
+    handling = false
+})
+const containerClass = computed(() => ({
+  row: props.direction === 'row',
+  column: props.direction === 'column'
+}))
 </script>
-
+<template>
+    <div  ref="container" id="container" :class="containerClass">
+        <div id="first" ref="first">
+            <slot name="first" >fallback first</slot>
+        </div>
+        <div id="splitter" ref="splitter"></div>
+        <div id="second" ref="second" >
+            <slot name="second" >fallback second</slot>
+        </div>
+    </div>
+</template>
 <style>
 * {
     box-sizing: border-box;
@@ -56,24 +114,4 @@ defineProps({
     overflow: auto;
 }
 </style>
-<template>
 
-<div v-if="direction=='row'" id="container" class="row">
-    <div id="first" v-bind:style="{'flex-grow': position, minWidth: first_min}">
-        <slot name="first" >fallback first</slot>
-    </div>
-    <div id="splitter" ref="splitter"></div>
-    <div id="second" v-bind:style="{'flex-grow': 100-position, minWidth: second_min}">
-        <slot name="second" >fallback second</slot>
-    </div>
-</div>
-<div v-else id="container" class="column">
-    <div id="first" v-bind:style="{'flex-grow': position, minHeight: first_min}">
-        <slot name="first" >fallback first</slot>
-    </div>
-    <div id="splitter" ref="splitter"></div>
-    <div id="second" v-bind:style="{'flex-grow': 100-position, minHeight: second_min}">
-        <slot name="second" >fallback second</slot>
-    </div>
-</div>
-</template>
