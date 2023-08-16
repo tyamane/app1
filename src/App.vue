@@ -15,10 +15,10 @@ import SplitContainer from './components/SplitContainer.vue'
   <main>  
       
     <SplitContainer direction="row" position=30>
-      <template v-slot:first>
+      <template #first>
         A1
       </template>
-      <template v-slot:second>A2</template>
+      <template #second>A2</template>
     </SplitContainer>  
     
     <TheWelcome />

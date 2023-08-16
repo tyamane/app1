@@ -1,0 +1,86 @@
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<style>
+    .tabmenu {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        background-color: #a4373a;
+        border: 0;
+        color: #fff;
+        line-height: 1.2em;
+        font-size: smaller;
+        font-family: 'Courier New', Courier, monospace;
+    }
+    
+    .tabmenu li {
+        padding: 10px;
+        border: 10;
+        cursor: pointer;
+    }
+    .tabmenu li:hover {
+        background-color:  #85383a;
+    }
+    .tabmenu li.active {
+        background-color: #f1f1f1;
+        color: #a4373a;
+    }
+    .ribbon {
+        padding: 10px;
+        border: 0;
+        background-color: #f1f1f1;
+        height: 40px;
+    }
+</style>
+<div id="app">
+    <div class="tabmenu" >
+        <li v-on:click="change('1')" v-bind:class="{'active': isActive === '1'}">ファイル</li>
+        <li v-on:click="change('2')" v-bind:class="{'active': isActive === '2'}">ホーム</li>
+        <li v-on:click="change('3')" v-bind:class="{'active': isActive === '3'}">作成</li>
+        <li v-on:click="change('3')" v-bind:class="{'active': isActive === '4'}">外部データ</li>
+        <li v-on:click="change('3')" v-bind:class="{'active': isActive === '5'}">データベースツール</li>
+        <li v-on:click="change('3')" v-bind:class="{'active': isActive === '6'}">ヘルプ</li>
+  
+    </div>
+    <div class="ribbon">
+        <li v-if="isActive === '1'">コンテンツ1コンテンツ1コンテンツ1コンテンツ1</li>
+        <li v-else-if="isActive === '2'">コンテンツ2コンテンツ2コンテンツ2コンテンツ2</li>
+        <li v-else-if="isActive === '3'">コンテンツ3コンテンツ3コンテンツ3コンテンツ3</li>
+    </div>
+
+    <div  ref="container">
+        <div id="exploler" >
+            <div>left</div>
+        </div>
+        <div id="splitter"></div>
+        <div id="content" >
+           <div id="tabContent">
+                <div id="tabmenu"></div>
+                <div id="maincontent"></div>
+           </div>
+           <div id="proprtySheet"></div>
+        </div>   
+    </div>
+</div>
+<script>
+    const { createApp, ref } = Vue
+
+
+    createApp({
+      setup() {
+        const message = ref('Hello vue!')
+        const isActive = ref('0')
+
+        function change(num) {
+            this.isActive = num;
+            console.log(this.isActive);
+        }
+        return {
+          message,
+          change,
+          isActive
+        }
+      }
+    }).mount('#app')
+  </script>
