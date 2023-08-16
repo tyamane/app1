@@ -1,6 +1,22 @@
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <style>
-    .tabmenu {
+    :root{
+        --menu_height: 15px;
+        --ribbon_height: 70px;
+        --foote_height: 30px;
+        --content_height: calc(100vh - var(--ribbon_height) - var(--menu_height) - var(--foote_height) - 20px);
+    }
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .test{
+        width: 100%;
+        height: var(--scrollbar_height);
+        background-color: deepskyblue;
+    }
+    /*メニューバー領域*/
+    #menuContainer {
         display: flex;
         list-style: none;
         padding: 0;
@@ -13,56 +29,135 @@
         font-size: smaller;
         font-family: 'Courier New', Courier, monospace;
     }
-    
-    .tabmenu li {
+    /*メニューバー領域の項目*/
+    #menuContainer div {
         padding: 10px;
-        border: 10;
         cursor: pointer;
+        height: var(--menu_height);
     }
-    .tabmenu li:hover {
+    #menuContainer div:hover {
         background-color:  #85383a;
     }
-    .tabmenu li.active {
+    #menuContainer div.active {
         background-color: #f1f1f1;
         color: #a4373a;
     }
+
+    #ribbonContainer {
+        background-color: #f1f1f1;
+        height: calc( var(--ribbon_height) + 10px );
+    }
     .ribbon {
-        padding: 10px;
         border: 0;
         background-color: #f1f1f1;
-        height: 40px;
+        height: var(--ribbon_height);
+        display: flex;
+        flex-direction: row;
     }
+    #container {
+        display: flex;
+        flex-direction: row;
+        /* 20pxスクロールバーの高さ分   */  
+        height: calc( 100vh - var(--menu_height) - var(--ribbon_height) - var(--foote_height) - 20px);
+        border: 3px solid #f1f1f1;
+    }
+    .exploler {
+        width: 200px;
+        min-height: 100%;
+        background-color: white;
+    }
+    .splitter{
+        width: 5px;
+        height: 100%;
+        background-color: #f1f1f1;
+        cursor: col-resize;
+    }
+    .splitter:hover{
+        background-color:deepskyblue
+    }
+    .footer {
+        height: 30px;
+        background-color: #f1f1f1;
+        width: 100%;
+        height: var(--foote_height);
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        text-align: center;
+    }
+    .blue{
+        margin: 10px;
+        width: 70px;
+        height: 50px;
+        background-color: deepskyblue;
+        border: 2px solid red;
+        border-radius: 5px; 
+  }
 </style>
-<div id="app">
-    <div class="tabmenu" >
-        <li v-on:click="change('1')" v-bind:class="{'active': isActive === '1'}">ファイル</li>
-        <li v-on:click="change('2')" v-bind:class="{'active': isActive === '2'}">ホーム</li>
-        <li v-on:click="change('3')" v-bind:class="{'active': isActive === '3'}">作成</li>
-        <li v-on:click="change('3')" v-bind:class="{'active': isActive === '4'}">外部データ</li>
-        <li v-on:click="change('3')" v-bind:class="{'active': isActive === '5'}">データベースツール</li>
-        <li v-on:click="change('3')" v-bind:class="{'active': isActive === '6'}">ヘルプ</li>
-  
-    </div>
-    <div class="ribbon">
-        <li v-if="isActive === '1'">コンテンツ1コンテンツ1コンテンツ1コンテンツ1</li>
-        <li v-else-if="isActive === '2'">コンテンツ2コンテンツ2コンテンツ2コンテンツ2</li>
-        <li v-else-if="isActive === '3'">コンテンツ3コンテンツ3コンテンツ3コンテンツ3</li>
-    </div>
+<body>
+    <div id="app">
 
-    <div  ref="container">
-        <div id="exploler" >
-            <div>left</div>
+        <div id="menuContainer" >
+            <div v-on:click="change('1')" v-bind:class="{'active': isActive === '1'}">ファイル</div>
+            <div v-on:click="change('2')" v-bind:class="{'active': isActive === '2'}">ホーム</div>
+            <div v-on:click="change('3')" v-bind:class="{'active': isActive === '3'}">作成</div>
+            <div v-on:click="change('3')" v-bind:class="{'active': isActive === '4'}">外部データ</div>
+            <div v-on:click="change('3')" v-bind:class="{'active': isActive === '5'}">データベースツール</div>
+            <div v-on:click="change('3')" v-bind:class="{'active': isActive === '6'}">ヘルプ</div>
         </div>
-        <div id="splitter"></div>
-        <div id="content" >
-           <div id="tabContent">
-                <div id="tabmenu"></div>
-                <div id="maincontent"></div>
-           </div>
-           <div id="proprtySheet"></div>
-        </div>   
-    </div>
-</div>
+
+        <div id="ribbonContainer">
+            <div class="ribbon" v-if="isActive === '1'">
+                <div class="blue">
+                    コンテンツ1
+                </div>
+                <div class="blue" style="width: 100px">
+                    コンテンツ1
+                </div>
+            </div>
+            <div v-else-if="isActive === '2'">コンテンツ2コンテンツ2コンテンツ2コンテンツ2</div>
+            <div v-else-if="isActive === '3'">コンテンツ3コンテンツ3コンテンツ3コンテンツ3</div>
+        </div>
+      
+        <!--<div class="test">test</div>-->
+        <div id="container">
+            <div class="exploler" >
+                <div>exploler</div>
+            </div>
+            <div class="splitter"></div>
+        </div>
+
+        <div class="footer">
+            footer
+        </div>
+        <!--
+        <div>
+            <div class="container">
+                
+
+                 <div class="exploler" >
+                    <div>exploler</div>
+                </div>
+                <div class="splitter"></div>
+                <div id="content" >
+                <div id="tabContent">
+                        <div id="tabmenu"></div>
+                        <div id="maincontent"></div>
+                </div>
+                <div id="proprtySheet"></div>
+                </div>   
+            </div>
+            <div class="footer">
+                footer
+            </div>
+                   
+              
+
+        </div>
+         -->
+    </div>    
+</body>
+
 <script>
     const { createApp, ref } = Vue
 
@@ -72,14 +167,25 @@
         const message = ref('Hello vue!')
         const isActive = ref('0')
 
+        // メニューのアクティブ状態を変更する
         function change(num) {
             this.isActive = num;
             console.log(this.isActive);
         }
+        const inner_width = ref(window.innerWidth)
+        const inner_height = ref(window.innerHeight)
+        window.addEventListener('resize', function () {
+            inner_width.value = window.innerWidth;
+            inner_height.value = window.innerHeight;
+            console.log('resize', inner_width.value, inner_height.value);
+
+        });
         return {
           message,
           change,
-          isActive
+          isActive,
+          inner_height,
+          inner_width
         }
       }
     }).mount('#app')
